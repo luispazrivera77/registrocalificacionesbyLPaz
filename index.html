@@ -1,18 +1,13 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Registro de Calificaciones</title>
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
     
-    * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-    }
-    
+    * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
         font-family: 'Inter', sans-serif;
         background: linear-gradient(135deg, #0c0c0c 0%, #1a1a2e 50%, #16213e 100%);
@@ -25,379 +20,129 @@
         position: relative;
         overflow-x: hidden;
     }
-    
     body::before {
         content: '';
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: radial-gradient(circle at 20% 50%, rgba(120, 119, 198, 0.1) 0%, transparent 50%),
-                    radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.08) 0%, transparent 50%),
-                    radial-gradient(circle at 40% 80%, rgba(120, 219, 255, 0.06) 0%, transparent 50%);
-        pointer-events: none;
-        z-index: 0;
+        position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+        background:
+            radial-gradient(circle at 20% 50%, rgba(120, 119, 198, 0.1) 0%, transparent 50%),
+            radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.08) 0%, transparent 50%),
+            radial-gradient(circle at 40% 80%, rgba(120, 219, 255, 0.06) 0%, transparent 50%);
+        pointer-events: none; z-index: 0;
     }
-    
-    .container {
-        position: relative;
-        z-index: 1;
-        width: 100%;
-        max-width: 800px;
-    }
-    
+    .container { position: relative; z-index: 1; width: 100%; max-width: 800px; }
     h1 {
-        font-size: 3rem;
-        font-weight: 700;
+        font-size: 3rem; font-weight: 700;
         background: linear-gradient(135deg, #00d4ff 0%, #ff00ff 50%, #ff4081 100%);
-        background-clip: text;
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        text-align: center;
-        margin: 40px 0;
-        text-shadow: 0 0 30px rgba(0, 212, 255, 0.3);
+        background-clip: text; -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        text-align: center; margin: 40px 0; text-shadow: 0 0 30px rgba(0, 212, 255, 0.3);
     }
-    
     .glass-card {
-        background: rgba(255, 255, 255, 0.05);
-        backdrop-filter: blur(20px);
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        border-radius: 20px;
-        padding: 30px;
-        margin: 20px 0;
-        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 20px;
+        padding: 30px; margin: 20px 0; box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
         transition: all 0.3s ease;
     }
-    
-    .glass-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4);
-        border-color: rgba(255, 255, 255, 0.2);
+    .glass-card:hover { transform: translateY(-5px); box-shadow: 0 30px 60px rgba(0,0,0,0.4); border-color: rgba(255,255,255,0.2); }
+    .hidden { display: none !important; }
+
+    .search-section { display: flex; justify-content: center; align-items: center; gap: 15px; flex-wrap: wrap; }
+    .search-input { position: relative; }
+    .search-input::after {
+        content: '🔍'; position: absolute; right: 15px; top: 50%; transform: translateY(-50%);
+        pointer-events: none; opacity: 0.6;
     }
-    
-    .hidden { 
-        display: none !important; 
-    }
-    
-    .search-section {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        gap: 15px;
-        flex-wrap: wrap;
-    }
-    
-    /* Estilos para el autocompletado */
-    .search-container {
-        position: relative;
-        min-width: 300px;
-        flex: 1;
-    }
-    
-    .autocomplete-dropdown {
-        position: absolute;
-        top: 100%;
-        left: 0;
-        right: 0;
-        background: rgba(30, 30, 50, 0.95);
-        backdrop-filter: blur(20px);
-        border: 1px solid rgba(255, 255, 255, 0.2);
-        border-top: none;
-        border-radius: 0 0 15px 15px;
-        max-height: 300px;
-        overflow-y: auto;
-        z-index: 1000;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-    }
-    
-    .autocomplete-item {
-        padding: 15px 20px;
-        cursor: pointer;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        transition: all 0.2s ease;
-        display: flex;
-        align-items: center;
-        gap: 10px;
-    }
-    
-    .autocomplete-item:last-child {
-        border-bottom: none;
-    }
-    
-    .autocomplete-item:hover,
-    .autocomplete-item.selected {
-        background: rgba(0, 212, 255, 0.2);
-        color: #00d4ff;
-    }
-    
-    .autocomplete-item .student-info {
-        display: flex;
-        flex-direction: column;
-        flex: 1;
-    }
-    
-    .autocomplete-item .student-name {
-        font-weight: 600;
-        font-size: 14px;
-    }
-    
-    .autocomplete-item .student-subject {
-        font-size: 12px;
-        color: rgba(224, 230, 237, 0.7);
-        margin-top: 2px;
-    }
-    
-    .autocomplete-item .student-grade {
-        font-size: 12px;
-        font-weight: 600;
-        padding: 4px 8px;
-        border-radius: 8px;
-        background: rgba(0, 212, 255, 0.2);
-        color: #00d4ff;
-    }
-    
     input, button {
-        padding: 15px 20px;
-        font-size: 16px;
-        font-family: 'Inter', sans-serif;
-        border: none;
-        border-radius: 12px;
-        transition: all 0.3s ease;
-        font-weight: 500;
+        padding: 15px 20px; font-size: 16px; font-family: 'Inter', sans-serif;
+        border: none; border-radius: 12px; transition: all 0.3s ease; font-weight: 500;
     }
-    
     input {
-        background: rgba(255, 255, 255, 0.08);
-        color: #e0e6ed;
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        backdrop-filter: blur(10px);
-        width: 100%;
+        background: rgba(255, 255, 255, 0.08); color: #e0e6ed; min-width: 200px;
+        border: 1px solid rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px);
     }
-    
     input:focus {
-        outline: none;
-        background: rgba(255, 255, 255, 0.12);
-        border-color: #00d4ff;
-        box-shadow: 0 0 20px rgba(0, 212, 255, 0.3);
-        transform: scale(1.02);
-        border-radius: 12px 12px 0 0;
+        outline: none; background: rgba(255,255,255,0.12); border-color: #00d4ff;
+        box-shadow: 0 0 20px rgba(0, 212, 255, 0.3); transform: scale(1.02);
     }
-    
-    input:focus + .autocomplete-dropdown {
-        border-radius: 0 0 15px 15px;
-    }
-    
-    input::placeholder {
-        color: rgba(224, 230, 237, 0.6);
-    }
-    
+    input::placeholder { color: rgba(224, 230, 237, 0.6); }
     button {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        color: white;
-        cursor: pointer;
-        font-weight: 600;
-        text-transform: uppercase;
-        letter-spacing: 1px;
-        position: relative;
-        overflow: hidden;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;
+        cursor: pointer; font-weight: 600; text-transform: uppercase; letter-spacing: 1px;
+        position: relative; overflow: hidden;
     }
-    
     button::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: -100%;
-        width: 100%;
-        height: 100%;
-        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+        content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
         transition: left 0.5s;
     }
-    
-    button:hover::before {
-        left: 100%;
+    button:hover::before { left: 100%; }
+    button:hover { transform: translateY(-2px); box-shadow: 0 10px 25px rgba(102,126,234,0.4); }
+
+    .btn-primary { background: linear-gradient(135deg, #00d4ff 0%, #ff00ff 100%); }
+    .btn-success { background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); }
+    .btn-edit { background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%); color: #333; }
+    .btn-delete { background: linear-gradient(135deg, #ff6b6b 0%, #ee5a52 100%); }
+    .btn-ghost {
+        background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12);
+        text-transform: none; letter-spacing: 0;
     }
-    
-    button:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
-    }
-    
-    .btn-primary {
-        background: linear-gradient(135deg, #00d4ff 0%, #ff00ff 100%);
-    }
-    
-    .btn-primary:hover {
-        box-shadow: 0 10px 25px rgba(0, 212, 255, 0.4);
-    }
-    
-    .btn-success {
-        background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-    }
-    
-    .btn-edit {
-        background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
-        color: #333;
-    }
-    
-    .form-grid {
-        display: grid;
-        grid-template-columns: 1fr;
-        gap: 20px;
-        margin: 20px 0;
-    }
-    
-    .form-row {
-        display: flex;
-        gap: 15px;
-        align-items: center;
-        flex-wrap: wrap;
-    }
-    
-    .form-row input {
-        flex: 1;
-        min-width: 150px;
-    }
-    
+
+    .form-grid { display: grid; grid-template-columns: 1fr; gap: 20px; margin: 20px 0; }
+    .form-row { display: flex; gap: 15px; align-items: center; flex-wrap: wrap; }
+    .form-row input { flex: 1; min-width: 150px; }
+
     .calificaciones-container {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-        gap: 15px;
-        margin: 20px 0;
-        padding: 20px;
-        background: rgba(255, 255, 255, 0.03);
-        border-radius: 15px;
-        border: 1px solid rgba(255, 255, 255, 0.05);
+        display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 12px; margin: 20px 0; padding: 20px;
+        background: rgba(255,255,255,0.03); border-radius: 15px; border: 1px solid rgba(255,255,255,0.05);
     }
-    
-    .calificaciones-container input {
-        text-align: center;
-        font-weight: 600;
-        min-width: auto;
-        background: rgba(0, 212, 255, 0.1);
-        border: 1px solid rgba(0, 212, 255, 0.2);
+    .nota-item {
+        display: flex; gap: 8px; align-items: center; justify-content: center;
+        background: rgba(0, 212, 255, 0.08); padding: 8px; border-radius: 12px;
+        border: 1px solid rgba(0, 212, 255, 0.15);
     }
-    
-    .calificaciones-container input:focus {
-        border-color: #00d4ff;
-        box-shadow: 0 0 15px rgba(0, 212, 255, 0.3);
-        border-radius: 12px;
-        transform: none;
+    .nota-item input {
+        text-align: center; font-weight: 600; flex: 1; min-width: 0;
+        background: transparent; border: 1px solid rgba(0, 212, 255, 0.2);
     }
-    
+    .nota-item button {
+        padding: 10px 12px; font-size: 14px; background: rgba(255,255,255,0.1);
+        border: 1px solid rgba(255,255,255,0.2);
+    }
+
     .promedio {
-        text-align: center;
-        font-size: 1.5rem;
-        font-weight: 700;
-        margin: 20px 0;
-        padding: 15px;
+        text-align: center; font-size: 1.5rem; font-weight: 700; margin: 20px 0; padding: 15px;
         background: linear-gradient(135deg, rgba(0, 212, 255, 0.1) 0%, rgba(255, 0, 255, 0.1) 100%);
-        border-radius: 15px;
-        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 15px; border: 1px solid rgba(255, 255, 255, 0.1);
     }
-    
     .promedio.excelente { color: #00ff88; }
     .promedio.bueno { color: #00d4ff; }
     .promedio.regular { color: #ffaa00; }
     .promedio.deficiente { color: #ff4444; }
-    
+
     .result-card {
-        background: rgba(255, 255, 255, 0.08);
-        border-radius: 15px;
-        padding: 25px;
-        margin: 20px 0;
-        border-left: 4px solid #00d4ff;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        background: rgba(255,255,255,0.08); border-radius: 15px; padding: 25px; margin: 20px 0;
+        border-left: 4px solid #00d4ff; box-shadow: 0 10px 30px rgba(0,0,0,0.2);
     }
-    
-    .result-info {
-        font-size: 1.1rem;
-        line-height: 1.8;
-        margin-bottom: 20px;
-    }
-    
-    .result-info strong {
-        color: #00d4ff;
-        font-weight: 600;
-    }
-    
-    .btn-group {
-        display: flex;
-        gap: 15px;
-        justify-content: center;
-        flex-wrap: wrap;
-        margin-top: 20px;
-    }
-    
+    .result-info { font-size: 1.1rem; line-height: 1.8; margin-bottom: 20px; }
+    .result-info strong { color: #00d4ff; font-weight: 600; }
+
+    .btn-group { display: flex; gap: 15px; justify-content: center; flex-wrap: wrap; margin-top: 20px; }
+
     .notification {
-        position: fixed;
-        top: 20px;
-        right: 20px;
-        padding: 15px 25px;
-        border-radius: 12px;
-        color: white;
-        font-weight: 600;
-        z-index: 1000;
-        transform: translateX(400px);
+        position: fixed; top: 20px; right: 20px; padding: 15px 25px; border-radius: 12px;
+        color: white; font-weight: 600; z-index: 1000; transform: translateX(400px);
         transition: transform 0.3s ease;
     }
-    
-    .notification.success {
-        background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-    }
-    
-    .notification.error {
-        background: linear-gradient(135deg, #ff6b6b 0%, #ee5a52 100%);
-    }
-    
-    .notification.show {
-        transform: translateX(0);
-    }
-    
-    /* Scrollbar personalizado para el dropdown */
-    .autocomplete-dropdown::-webkit-scrollbar {
-        width: 6px;
-    }
-    
-    .autocomplete-dropdown::-webkit-scrollbar-track {
-        background: rgba(255, 255, 255, 0.1);
-        border-radius: 3px;
-    }
-    
-    .autocomplete-dropdown::-webkit-scrollbar-thumb {
-        background: rgba(0, 212, 255, 0.5);
-        border-radius: 3px;
-    }
-    
-    .autocomplete-dropdown::-webkit-scrollbar-thumb:hover {
-        background: rgba(0, 212, 255, 0.8);
-    }
-    
+    .notification.success { background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); }
+    .notification.error { background: linear-gradient(135deg, #ff6b6b 0%, #ee5a52 100%); }
+    .notification.show { transform: translateX(0); }
+
     @media (max-width: 768px) {
-        h1 {
-            font-size: 2.5rem;
-        }
-        
-        .glass-card {
-            padding: 20px;
-            margin: 10px 0;
-        }
-        
-        .search-section {
-            flex-direction: column;
-        }
-        
-        .search-container {
-            min-width: 250px;
-        }
-        
-        .form-row {
-            flex-direction: column;
-        }
-        
-        .calificaciones-container {
-            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
-        }
+        h1 { font-size: 2.5rem; }
+        .glass-card { padding: 20px; margin: 10px 0; }
+        .search-section { flex-direction: column; }
+        .form-row { flex-direction: column; }
+        .calificaciones-container { grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); }
     }
 </style>
 </head>
@@ -409,12 +154,12 @@
     <!-- Buscador -->
     <div id="searchSection" class="glass-card">
         <div class="search-section">
-            <div class="search-container">
+            <div class="search-input">
                 <input type="text" id="searchName" placeholder="Buscar estudiante por nombre..." maxlength="60">
-                <div id="autocompleteDropdown" class="autocomplete-dropdown hidden"></div>
             </div>
             <button class="btn-primary" onclick="buscar()">Buscar</button>
             <button class="btn-success" onclick="nuevoRegistro()">Nuevo Registro</button>
+            <button class="btn-delete" onclick="eliminarTodo()">Eliminar todo</button>
         </div>
     </div>
 
@@ -428,13 +173,13 @@
             <div class="form-row">
                 <input type="text" id="nombre" maxlength="60" placeholder="Nombre completo del estudiante">
             </div>
-            
             <div class="form-row">
                 <input type="text" id="asignatura" maxlength="60" placeholder="Nombre de la asignatura">
             </div>
-            
             <div class="form-row">
                 <input type="number" id="numCalificaciones" min="1" max="10" placeholder="Número de calificaciones (1-10)" onchange="generarCampos()">
+                <button class="btn-ghost" onclick="agregarNota()" type="button">Agregar nota</button>
+                <button class="btn-ghost" onclick="limpiarNotas()" type="button">Limpiar notas</button>
             </div>
         </div>
         
@@ -455,6 +200,7 @@
         
         <div class="btn-group">
             <button class="btn-edit" onclick="editar()">Editar Registro</button>
+            <button class="btn-delete" onclick="eliminarRegistro()">Eliminar Registro</button>
             <button class="btn-primary" onclick="volverBusqueda()">Nueva Búsqueda</button>
         </div>
     </div>
@@ -463,14 +209,12 @@
 <script>
 let registros = JSON.parse(localStorage.getItem('registros') || '{}');
 let registroActual = null;
-let selectedIndex = -1;
 
 function showNotification(message, type = 'success') {
     const notification = document.createElement('div');
     notification.className = `notification ${type}`;
     notification.textContent = message;
     document.body.appendChild(notification);
-    
     setTimeout(() => notification.classList.add('show'), 100);
     setTimeout(() => {
         notification.classList.remove('show');
@@ -478,109 +222,8 @@ function showNotification(message, type = 'success') {
     }, 3000);
 }
 
-// Función para buscar coincidencias
-function buscarCoincidencias(query) {
-    if (!query.trim()) return [];
-    
-    const queryLower = query.toLowerCase();
-    return Object.keys(registros)
-        .filter(nombre => nombre.toLowerCase().includes(queryLower))
-        .map(nombre => {
-            const registro = registros[nombre];
-            const notasNumericas = registro.notas.map(n => parseFloat(n)).filter(n => !isNaN(n));
-            const promedio = notasNumericas.length > 0 ? 
-                (notasNumericas.reduce((a,b) => a+b, 0) / notasNumericas.length).toFixed(2) : 'N/A';
-            
-            return {
-                nombre,
-                asignatura: registro.asignatura,
-                promedio
-            };
-        })
-        .slice(0, 8); // Limitar a 8 resultados
-}
-
-// Función para mostrar el dropdown de autocompletado
-function mostrarAutocomplete(coincidencias) {
-    const dropdown = document.getElementById('autocompleteDropdown');
-    
-    if (coincidencias.length === 0) {
-        dropdown.classList.add('hidden');
-        return;
-    }
-    
-    dropdown.innerHTML = '';
-    dropdown.classList.remove('hidden');
-    
-    coincidencias.forEach((item, index) => {
-        const div = document.createElement('div');
-        div.className = 'autocomplete-item';
-        div.innerHTML = `
-            <div class="student-info">
-                <div class="student-name">👤 ${item.nombre}</div>
-                <div class="student-subject">📚 ${item.asignatura}</div>
-            </div>
-            <div class="student-grade">${item.promedio}</div>
-        `;
-        
-        div.addEventListener('click', () => seleccionarEstudiante(item.nombre));
-        dropdown.appendChild(div);
-    });
-}
-
-// Función para ocultar el dropdown
-function ocultarAutocomplete() {
-    setTimeout(() => {
-        document.getElementById('autocompleteDropdown').classList.add('hidden');
-        selectedIndex = -1;
-    }, 200);
-}
-
-// Función para seleccionar un estudiante del dropdown
-function seleccionarEstudiante(nombre) {
-    document.getElementById('searchName').value = nombre;
-    document.getElementById('autocompleteDropdown').classList.add('hidden');
-    selectedIndex = -1;
-    buscar();
-}
-
-// Función para navegar con teclado
-function navegarConTeclado(e) {
-    const dropdown = document.getElementById('autocompleteDropdown');
-    const items = dropdown.querySelectorAll('.autocomplete-item');
-    
-    if (items.length === 0) return;
-    
-    if (e.key === 'ArrowDown') {
-        e.preventDefault();
-        selectedIndex = Math.min(selectedIndex + 1, items.length - 1);
-    } else if (e.key === 'ArrowUp') {
-        e.preventDefault();
-        selectedIndex = Math.max(selectedIndex - 1, -1);
-    } else if (e.key === 'Enter') {
-        e.preventDefault();
-        if (selectedIndex >= 0) {
-            const nombreSeleccionado = items[selectedIndex].querySelector('.student-name').textContent.replace('👤 ', '');
-            seleccionarEstudiante(nombreSeleccionado);
-        } else {
-            buscar();
-        }
-        return;
-    } else if (e.key === 'Escape') {
-        dropdown.classList.add('hidden');
-        selectedIndex = -1;
-        return;
-    }
-    
-    // Actualizar selección visual
-    items.forEach((item, index) => {
-        if (index === selectedIndex) {
-            item.classList.add('selected');
-            item.scrollIntoView({ block: 'nearest' });
-        } else {
-            item.classList.remove('selected');
-        }
-    });
+function guardarRegistros() {
+    localStorage.setItem('registros', JSON.stringify(registros));
 }
 
 function nuevoRegistro() {
@@ -597,56 +240,84 @@ function limpiarFormulario() {
     document.getElementById('numCalificaciones').value = '';
     document.getElementById('calificacionesContainer').innerHTML = '';
     document.getElementById('promedio').innerHTML = '';
+    document.getElementById('promedio').className = 'promedio';
     registroActual = null;
+}
+
+function agregarNota(valor = '') {
+    const container = document.getElementById('calificacionesContainer');
+    const idx = container.children.length;
+
+    const item = document.createElement('div');
+    item.className = 'nota-item';
+
+    const input = document.createElement('input');
+    input.type = 'number'; input.min = 1; input.max = 7; input.step = 0.1;
+    input.placeholder = `Nota ${idx + 1}`;
+    input.value = valor;
+    input.oninput = () => { validarBorde(input); calcularPromedio(); };
+
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'btn-delete';
+    btn.textContent = 'Eliminar';
+    btn.onclick = () => { item.remove(); renumerarNotas(); calcularPromedio(); };
+
+    item.appendChild(input);
+    item.appendChild(btn);
+    container.appendChild(item);
+}
+
+function limpiarNotas() {
+    document.getElementById('calificacionesContainer').innerHTML = '';
+    document.getElementById('numCalificaciones').value = '';
+    calcularPromedio();
 }
 
 function generarCampos() {
     const num = parseInt(document.getElementById('numCalificaciones').value) || 0;
     const container = document.getElementById('calificacionesContainer');
     container.innerHTML = '';
-    
     if (num > 0) {
-        for (let i = 0; i < num; i++) {
-            const input = document.createElement('input');
-            input.type = 'number';
-            input.min = 1;
-            input.max = 7;
-            input.step = 0.1;
-            input.placeholder = `Nota ${i+1}`;
-            input.oninput = calcularPromedio;
-            container.appendChild(input);
-        }
+        for (let i = 0; i < num; i++) agregarNota('');
+    }
+    calcularPromedio();
+}
+
+function renumerarNotas() {
+    const items = document.querySelectorAll('.nota-item input');
+    items.forEach((input, i) => input.placeholder = `Nota ${i + 1}`);
+}
+
+function validarBorde(input) {
+    const value = parseFloat(input.value);
+    if (input.value && (isNaN(value) || value < 1 || value > 7)) {
+        input.style.borderColor = '#ff4444';
+    } else {
+        input.style.borderColor = 'rgba(0, 212, 255, 0.2)';
     }
 }
 
-function calcularPromedio() {
-    const notas = [...document.querySelectorAll('#calificacionesContainer input')]
-        .map(i => parseFloat(i.value))
-        .filter(v => !isNaN(v) && v >= 1 && v <= 7);
+function leerNotas() {
+    const notas = [...document.querySelectorAll('.nota-item input')]
+        .map(i => i.value.trim())
+        .filter(v => v !== '')
+        .map(v => parseFloat(v))
+        .filter(n => !isNaN(n));
+    return notas;
+}
 
+function calcularPromedio() {
+    const notas = leerNotas();
     const promedioElement = document.getElementById('promedio');
-    
     if (notas.length > 0) {
         const promedio = (notas.reduce((a,b) => a+b, 0) / notas.length);
         const promedioText = promedio.toFixed(2);
-        
-        // Clasificar el promedio
-        let clase = '';
-        let emoji = '';
-        if (promedio >= 6.0) {
-            clase = 'excelente';
-            emoji = '🌟';
-        } else if (promedio >= 5.0) {
-            clase = 'bueno';
-            emoji = '👍';
-        } else if (promedio >= 4.0) {
-            clase = 'regular';
-            emoji = '⚠️';
-        } else {
-            clase = 'deficiente';
-            emoji = '❌';
-        }
-        
+        let clase = '', emoji = '';
+        if (promedio >= 6.0) { clase = 'excelente'; emoji = '🌟'; }
+        else if (promedio >= 5.0) { clase = 'bueno'; emoji = '👍'; }
+        else if (promedio >= 4.0) { clase = 'regular'; emoji = '⚠️'; }
+        else { clase = 'deficiente'; emoji = '❌'; }
         promedioElement.innerHTML = `${emoji} Promedio: ${promedioText}`;
         promedioElement.className = `promedio ${clase}`;
     } else {
@@ -658,80 +329,66 @@ function calcularPromedio() {
 function guardar() {
     const nombre = document.getElementById('nombre').value.trim();
     const asignatura = document.getElementById('asignatura').value.trim();
-    const inputs = document.querySelectorAll('#calificacionesContainer input');
-    const notas = [...inputs].map(i => i.value).filter(v => v !== '');
+    const notas = leerNotas();
 
     if (!nombre || !asignatura) {
         showNotification('Por favor, completa el nombre y la asignatura', 'error');
         return;
     }
-
     if (notas.length === 0) {
         showNotification('Ingresa al menos una calificación', 'error');
         return;
     }
-
-    // Verificar que todas las notas estén en el rango válido
-    const notasValidas = notas.every(nota => {
-        const num = parseFloat(nota);
-        return !isNaN(num) && num >= 1 && num <= 7;
-    });
-
+    const notasValidas = notas.every(n => n >= 1 && n <= 7);
     if (!notasValidas) {
         showNotification('Todas las notas deben estar entre 1.0 y 7.0', 'error');
         return;
     }
 
-    registros[nombre] = { asignatura, notas };
-    localStorage.setItem('registros', JSON.stringify(registros));
+    // Si está en modo edición y cambia el nombre, elimina la clave anterior
+    if (registroActual && registroActual !== nombre) {
+        if (registros[nombre]) {
+            const ok = confirm(`Ya existe un registro para "${nombre}". ¿Deseas sobrescribirlo?`);
+            if (!ok) return;
+        }
+        delete registros[registroActual];
+    } else if (!registroActual && registros[nombre]) {
+        const ok = confirm(`Ya existe un registro para "${nombre}". ¿Deseas sobrescribirlo?`);
+        if (!ok) return;
+    }
+
+    registros[nombre] = { asignatura, notas: notas.map(n => n.toFixed(1)) };
+    guardarRegistros();
 
     showNotification(`Registro guardado exitosamente para ${nombre}`, 'success');
 
     document.getElementById('formSection').classList.add('hidden');
     document.getElementById('searchSection').classList.remove('hidden');
     document.getElementById('searchName').value = '';
+    registroActual = null;
 }
 
 function buscar() {
     const nombre = document.getElementById('searchName').value.trim();
-    
     if (!nombre) {
         showNotification('Ingresa un nombre para buscar', 'error');
         return;
     }
-    
     if (registros[nombre]) {
         registroActual = nombre;
         const { asignatura, notas } = registros[nombre];
-        
-        // Calcular promedio
         const notasNumericas = notas.map(n => parseFloat(n)).filter(n => !isNaN(n));
-        const promedio = notasNumericas.length > 0 ? 
+        const promedio = notasNumericas.length > 0 ?
             (notasNumericas.reduce((a,b) => a+b, 0) / notasNumericas.length).toFixed(2) : 'N/A';
-        
-        // Mostrar información detallada
         document.getElementById('resultData').innerHTML = `
-            <div style="margin-bottom: 15px;">
-                <strong>👤 Estudiante:</strong> ${nombre}
-            </div>
-            <div style="margin-bottom: 15px;">
-                <strong>📚 Asignatura:</strong> ${asignatura}
-            </div>
-            <div style="margin-bottom: 15px;">
-                <strong>📝 Calificaciones:</strong> ${notas.join(' • ')}
-            </div>
-            <div style="margin-bottom: 15px;">
-                <strong>📊 Promedio:</strong> ${promedio}
-            </div>
-            <div>
-                <strong>📈 Total de notas:</strong> ${notas.length}
-            </div>
+            <div style="margin-bottom: 15px;"><strong>👤 Estudiante:</strong> ${nombre}</div>
+            <div style="margin-bottom: 15px;"><strong>📚 Asignatura:</strong> ${asignatura}</div>
+            <div style="margin-bottom: 15px;"><strong>📝 Calificaciones:</strong> ${notas.join(' • ')}</div>
+            <div style="margin-bottom: 15px;"><strong>📊 Promedio:</strong> ${promedio}</div>
+            <div><strong>📈 Total de notas:</strong> ${notas.length}</div>
         `;
-        
         document.getElementById('searchSection').classList.add('hidden');
         document.getElementById('resultSection').classList.remove('hidden');
-        document.getElementById('autocompleteDropdown').classList.add('hidden');
-        
         showNotification(`Registro encontrado: ${nombre}`, 'success');
     } else {
         showNotification(`No se encontró un registro para "${nombre}"`, 'error');
@@ -740,34 +397,64 @@ function buscar() {
 
 function editar() {
     if (!registroActual) return;
-    
     const { asignatura, notas } = registros[registroActual];
-    
+
     document.getElementById('formTitle').textContent = `Editando: ${registroActual}`;
     document.getElementById('nombre').value = registroActual;
     document.getElementById('asignatura').value = asignatura;
     document.getElementById('numCalificaciones').value = notas.length;
-    
-    generarCampos();
-    
-    const inputs = document.querySelectorAll('#calificacionesContainer input');
-    inputs.forEach((input, i) => {
-        if (i < notas.length) {
-            input.value = notas[i] || '';
-        }
-    });
-    
+
+    const container = document.getElementById('calificacionesContainer');
+    container.innerHTML = '';
+    notas.forEach(n => agregarNota(n));
+
     calcularPromedio();
-    
+
     document.getElementById('resultSection').classList.add('hidden');
     document.getElementById('formSection').classList.remove('hidden');
+}
+
+function eliminarRegistro() {
+    if (!registroActual) return;
+    const ok = confirm(`¿Eliminar el registro de "${registroActual}"? Esta acción no se puede deshacer.`);
+    if (!ok) return;
+
+    delete registros[registroActual];
+    guardarRegistros();
+    showNotification(`Registro eliminado: ${registroActual}`, 'success');
+
+    registroActual = null;
+    document.getElementById('resultSection').classList.add('hidden');
+    document.getElementById('searchSection').classList.remove('hidden');
+    document.getElementById('searchName').value = '';
+}
+
+function eliminarTodo() {
+    const hayDatos = Object.keys(registros).length > 0;
+    if (!hayDatos) {
+        showNotification('No hay registros para eliminar', 'error');
+        return;
+    }
+    const ok = confirm('¿Eliminar TODOS los registros? Esta acción no se puede deshacer.');
+    if (!ok) return;
+
+    registros = {};
+    guardarRegistros();
+    showNotification('Todos los registros fueron eliminados', 'success');
+
+    // Reset de UI si estaba en otra vista
+    registroActual = null;
+    document.getElementById('formSection').classList.add('hidden');
+    document.getElementById('resultSection').classList.add('hidden');
+    document.getElementById('searchSection').classList.remove('hidden');
+    document.getElementById('searchName').value = '';
+    limpiarFormulario();
 }
 
 function volverBusqueda() {
     document.getElementById('resultSection').classList.add('hidden');
     document.getElementById('searchSection').classList.remove('hidden');
     document.getElementById('searchName').value = '';
-    document.getElementById('autocompleteDropdown').classList.add('hidden');
     registroActual = null;
 }
 
@@ -777,54 +464,15 @@ function cancelar() {
     limpiarFormulario();
 }
 
-// Event Listeners
-document.getElementById('searchName').addEventListener('input', function(e) {
-    const query = e.target.value;
-    const coincidencias = buscarCoincidencias(query);
-    mostrarAutocomplete(coincidencias);
+// Permitir búsqueda con Enter
+document.getElementById('searchName').addEventListener('keypress', function(e) {
+    if (e.key === 'Enter') buscar();
 });
 
-document.getElementById('searchName').addEventListener('keydown', navegarConTeclado);
-
-document.getElementById('searchName').addEventListener('blur', ocultarAutocomplete);
-
-document.getElementById('searchName').addEventListener('focus', function(e) {
-    const query = e.target.value;
-    if (query) {
-        const coincidencias = buscarCoincidencias(query);
-        mostrarAutocomplete(coincidencias);
-    }
-});
-
-// Cerrar modal al hacer clic fuera
-document.addEventListener('click', function(e) {
-    if (!e.target.closest('.search-container')) {
-        document.getElementById('autocompleteDropdown').classList.add('hidden');
-        selectedIndex = -1;
-    }
-    
-    // Cerrar modal de confirmación al hacer clic en el overlay
-    if (e.target.classList.contains('modal-overlay')) {
-        cancelarEliminacion();
-    }
-});
-
-// Cerrar modal con Escape
-document.addEventListener('keydown', function(e) {
-    if (e.key === 'Escape') {
-        cancelarEliminacion();
-    }
-});
-
-// Permitir números decimales en las calificaciones
+// Validación visual en inputs de notas (delegada)
 document.addEventListener('input', function(e) {
-    if (e.target.matches('#calificacionesContainer input')) {
-        let value = e.target.value;
-        if (value && (parseFloat(value) < 1 || parseFloat(value) > 7)) {
-            e.target.style.borderColor = '#ff4444';
-        } else {
-            e.target.style.borderColor = 'rgba(0, 212, 255, 0.2)';
-        }
+    if (e.target.closest('.nota-item') && e.target.tagName === 'INPUT') {
+        validarBorde(e.target);
     }
 });
 </script>

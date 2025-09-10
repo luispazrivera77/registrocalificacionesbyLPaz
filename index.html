@@ -78,9 +78,9 @@ button.primary{background:linear-gradient(135deg,#00d4ff,#ff00ff)}
   <!-- Formulario -->
   <div id="formSection" class="panel section hidden">
     <div class="small" id="formTitle">Nuevo Registro</div>
-    <input id="nombre" type="text" maxlength="60" placeholder="Nombre completo del estudiante">
-    <input id="asignatura" type="text" maxlength="60" placeholder="Nombre de la asignatura">
-    <input id="numCalificaciones" type="number" min="1" max="10" placeholder="Número de calificaciones (1-10)" onchange="generarCampos()">
+    <input id="nombre" type="text" maxlength="60" placeholder="Estudiante">
+    <input id="asignatura" type="text" maxlength="60" placeholder="Asignatura">
+    <input id="numCalificaciones" type="number" min="1" max="10" placeholder="N° Notas (1-10)" onchange="generarCampos()">
     <div id="calificacionesContainer" class="list"></div>
     <div class="row-actions">
       <button onclick="guardar()">Guardar</button>

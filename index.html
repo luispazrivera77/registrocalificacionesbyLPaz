@@ -796,11 +796,23 @@ document.getElementById('searchName').addEventListener('focus', function(e) {
     }
 });
 
-// Cerrar dropdown al hacer clic fuera
+// Cerrar modal al hacer clic fuera
 document.addEventListener('click', function(e) {
     if (!e.target.closest('.search-container')) {
         document.getElementById('autocompleteDropdown').classList.add('hidden');
         selectedIndex = -1;
+    }
+    
+    // Cerrar modal de confirmación al hacer clic en el overlay
+    if (e.target.classList.contains('modal-overlay')) {
+        cancelarEliminacion();
+    }
+});
+
+// Cerrar modal con Escape
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+        cancelarEliminacion();
     }
 });
 

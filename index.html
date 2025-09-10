@@ -2,118 +2,55 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>Registro de Calificaciones</title>
 <style>
-/* Tipografía y base minimalista */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
 *{box-sizing:border-box;margin:0;padding:0}
-:root{
-  --bg:#0f1220; --panel:rgba(255,255,255,.06); --stroke:rgba(255,255,255,.12);
-  --fg:#e7ecf2; --accent:#00d4ff; --muted:#9aa7b2;
-}
-html,body{height:100%}
-body{
-  font-family:'Inter',sans-serif; background:linear-gradient(135deg,#0b0b0f 0%,#14182c 60%,#0f1220 100%);
-  color:var(--fg); display:flex; flex-direction:column; align-items:center; padding:24px;
-}
+:root{--panel:rgba(255,255,255,.06);--stroke:rgba(255,255,255,.12);--fg:#e7ecf2;--accent:#00d4ff;--muted:#9aa7b2;}
+body{font-family:'Inter',sans-serif;background:linear-gradient(135deg,#0b0b0f 0%,#14182c 60%,#0f1220 100%);color:var(--fg);display:flex;justify-content:flex-start;align-items:center;flex-direction:column;padding:24px}
 .container{width:100%;max-width:780px}
-
-/* Encabezado y layout principal */
-h1{
-  font-size:2.2rem; font-weight:700; letter-spacing:.3px; text-align:center; margin:28px 0 18px;
-  background:linear-gradient(135deg,#00d4ff 0%,#ff00ff 60%,#ff4081 100%);
-  -webkit-background-clip:text; -webkit-text-fill-color:transparent;
-}
-.panel{
-  background:var(--panel); border:1px solid var(--stroke); border-radius:14px; padding:16px;
-}
+h1{font-size:2.2rem;font-weight:700;text-align:center;margin:28px 0 18px;background:linear-gradient(135deg,#00d4ff 0%,#ff00ff 60%,#ff4081 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.panel{background:var(--panel);border:1px solid var(--stroke);border-radius:14px;padding:16px}
 .hidden{display:none!important}
-
-/* Buscador minimal */
-.search-wrap{display:flex; flex-direction:column; gap:10px; align-items:stretch}
-.search-row{display:flex; gap:10px; align-items:center}
-input,button,select{border:none; border-radius:12px; font-size:15px}
-input{
-  padding:12px 14px; background:rgba(255,255,255,.08); color:var(--fg);
-  border:1px solid var(--stroke); flex:1; min-width:220px;
-}
+input,button,select{border:none;border-radius:12px;font-size:15px}
+input{padding:12px 14px;background:rgba(255,255,255,.08);color:var(--fg);border:1px solid var(--stroke);flex:1}
 input::placeholder{color:var(--muted)}
-input:focus{outline:none; border-color:var(--accent); box-shadow:0 0 0 3px rgba(0,212,255,.15)}
-button{
-  padding:12px 16px; color:white; background:linear-gradient(135deg,#4facfe 0%,#00f2fe 100%);
-  cursor:pointer; font-weight:600; letter-spacing:.2px;
-}
-button.ghost{background:transparent; color:var(--fg); border:1px solid var(--stroke)}
-button.danger{background:linear-gradient(135deg,#ff6b6b 0%,#ee5a52 100%)}
-button.primary{background:linear-gradient(135deg,#00d4ff 0%,#ff00ff 100%)}
-
-/* Sugerencias */
-.suggest{position:relative}
-.suggest-box{
-  position:absolute; top:48px; left:0; right:0; background:var(--panel);
-  border:1px solid var(--stroke); border-radius:12px; overflow:hidden; z-index:10;
-}
-.s-item{padding:10px 12px; cursor:pointer}
-.s-item:hover{background:rgba(255,255,255,.08)}
-
-/* Menú hamburguesa */
-.header-bar{position:relative; display:flex; justify-content:flex-end; margin-bottom:8px}
-.hamburger{
-  width:40px; height:40px; border-radius:10px; border:1px solid var(--stroke);
-  background:var(--panel); display:grid; place-items:center; cursor:pointer;
-}
-.hamburger span{display:block; width:18px; height:2px; background:var(--fg); position:relative}
-.hamburger span::before,.hamburger span::after{
-  content:''; position:absolute; left:0; width:18px; height:2px; background:var(--fg);
-}
-.hamburger span::before{top:-6px}.hamburger span::after{top:6px}
-
-/* Drawer */
-.drawer{
-  position:fixed; top:0; right:0; width:320px; max-width:92vw; height:100vh; padding:18px;
-  background:rgba(10,12,22,.9); backdrop-filter:blur(10px);
-  border-left:1px solid var(--stroke); transform:translateX(105%); transition:transform .25s ease;
-  z-index:50; display:flex; flex-direction:column; gap:14px;
-}
-.drawer.show{transform:translateX(0)}
-.drawer h3{font-size:1.05rem; margin-bottom:4px}
-.drawer .line{height:1px; background:var(--stroke); margin:6px 0}
-.small{font-size:.92rem; color:var(--muted)}
-select{padding:10px 12px; background:rgba(255,255,255,.07); color:var(--fg); border:1px solid var(--stroke); width:100%}
-.action-row{display:flex; gap:10px; flex-wrap:wrap}
-.dev-note{margin-top:auto; font-size:.85rem; color:var(--muted); border-top:1px solid var(--stroke); padding-top:10px}
-
-/* Vistas */
+input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(0,212,255,.15)}
+button{padding:12px 16px;color:#fff;background:linear-gradient(135deg,#4facfe,#00f2fe);cursor:pointer;font-weight:600}
+button.ghost{background:transparent;color:var(--fg);border:1px solid var(--stroke)}
+button.danger{background:linear-gradient(135deg,#ff6b6b,#ee5a52)}
+button.primary{background:linear-gradient(135deg,#00d4ff,#ff00ff)}
 .section{margin-top:14px}
-.result-card{background:var(--panel); border:1px solid var(--stroke); border-radius:12px; padding:16px}
-.row-actions{display:flex; gap:10px; flex-wrap:wrap; justify-content:center; margin-top:12px}
-.kv{display:grid; gap:8px; font-size:1rem}
+.search-wrap{display:flex;flex-direction:column;gap:10px}
+.search-row{display:flex;gap:10px;align-items:center}
+.suggest{position:relative;flex:1}
+.suggest-box{position:absolute;top:48px;left:0;right:0;background:var(--panel);border:1px solid var(--stroke);border-radius:12px;overflow:hidden;z-index:10}
+.s-item{padding:10px 12px;cursor:pointer}
+.s-item:hover{background:rgba(255,255,255,.08)}
+.header-bar{display:flex;justify-content:flex-end;margin-bottom:8px}
+.hamburger{width:40px;height:40px;border-radius:10px;border:1px solid var(--stroke);background:var(--panel);display:grid;place-items:center;cursor:pointer}
+.hamburger span{display:block;width:18px;height:2px;background:#fff;position:relative}
+.hamburger span:before,.hamburger span:after{content:'';position:absolute;left:0;width:18px;height:2px;background:#fff}
+.hamburger span:before{top:-6px}.hamburger span:after{top:6px}
+.drawer{position:fixed;top:0;right:0;width:320px;max-width:92vw;height:100vh;padding:18px;background:rgba(10,12,22,.9);backdrop-filter:blur(10px);border-left:1px solid var(--stroke);transform:translateX(105%);transition:transform .25s ease;z-index:50;display:flex;flex-direction:column;gap:14px}
+.drawer.show{transform:translateX(0)}
+.small{font-size:.92rem;color:var(--muted)}
+.select{padding:10px 12px;background:rgba(255,255,255,.07);color:var(--fg);border:1px solid var(--stroke);width:100%}
+.line{height:1px;background:var(--stroke)}
+.action-row{display:flex;gap:10px;flex-wrap:wrap}
+.dev-note{margin-top:auto;font-size:.85rem;color:var(--muted);border-top:1px solid var(--stroke);padding-top:10px}
+.kv{display:grid;gap:8px}
 .kv div strong{color:var(--accent)}
-
-/* Lista por asignatura */
-.list{display:grid; gap:12px; margin-top:10px}
-.item{border:1px solid var(--stroke); border-radius:12px; padding:12px; background:rgba(255,255,255,.04)}
-.item .title{font-weight:600; margin-bottom:6px}
-.mono{font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;}
-
-/* Formulario */
-.form-grid{display:grid; gap:12px}
-.tags{font-size:.9rem; color:var(--muted)}
-
-/* Toast */
-.toast{
-  position:fixed; top:16px; right:16px; padding:10px 14px; border-radius:10px; color:white;
-  background:linear-gradient(135deg,#4facfe 0%,#00f2fe 100%); transform:translateX(140%);
-  transition:transform .25s ease; z-index:1000
-}
+.row-actions{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:12px}
+.list{display:grid;gap:12px}
+.item{border:1px solid var(--stroke);border-radius:12px;padding:12px;background:rgba(255,255,255,.04)}
+.item .title{font-weight:600;margin-bottom:6px}
+.mono{font-family:ui-monospace,Menlo,Consolas,monospace}
+.toast{position:fixed;top:16px;right:16px;padding:10px 14px;border-radius:10px;color:#fff;background:linear-gradient(135deg,#4facfe,#00f2fe);transform:translateX(140%);transition:transform .25s ease;z-index:1000}
 .toast.show{transform:translateX(0)}
-.toast.error{background:linear-gradient(135deg,#ff6b6b 0%,#ee5a52 100%)}
-
-@media (max-width:640px){
-  h1{font-size:1.8rem}
-  .search-row{flex-direction:column; align-items:stretch}
-}
+.toast.error{background:linear-gradient(135deg,#ff6b6b,#ee5a52)}
+@media(max-width:640px){h1{font-size:1.9rem}.search-row{flex-direction:column;align-items:stretch}}
 </style>
 </head>
 <body>
@@ -124,39 +61,36 @@ select{padding:10px 12px; background:rgba(255,255,255,.07); color:var(--fg); bor
 
   <h1>Registro de Calificaciones</h1>
 
-  <!-- Pantalla principal minimal: buscador y botón -->
+  <!-- Home minimal -->
   <div id="home" class="panel section">
     <div class="search-wrap">
       <div class="search-row">
-        <div class="suggest" style="flex:1">
-          <input id="searchName" type="text" placeholder="Buscar estudiante por nombre..." maxlength="60">
+        <div class="suggest">
+          <input id="searchName" type="text" placeholder="Buscar estudiante por nombre..." maxlength="60" />
           <div id="suggestions" class="suggest-box hidden"></div>
         </div>
         <button class="primary" onclick="buscar()">Buscar</button>
       </div>
       <button onclick="nuevoRegistro()">Nuevo Registro</button>
-      <div class="tags">Escribe para ver coincidencias. Selecciona una sugerencia para abrir el registro.</div>
     </div>
   </div>
 
-  <!-- Formulario de registro -->
+  <!-- Formulario -->
   <div id="formSection" class="panel section hidden">
-    <div class="form-grid">
-      <div class="tags" id="formTitle">Nuevo Registro</div>
-      <input id="nombre" type="text" maxlength="60" placeholder="Nombre completo del estudiante">
-      <input id="asignatura" type="text" maxlength="60" placeholder="Nombre de la asignatura">
-      <input id="numCalificaciones" type="number" min="1" max="10" placeholder="Número de calificaciones (1-10)" onchange="generarCampos()">
-      <div id="calificacionesContainer" class="form-grid"></div>
-      <div class="row-actions">
-        <button onclick="guardar()">Guardar</button>
-        <button class="ghost" onclick="cancelar()">Cancelar</button>
-      </div>
+    <div class="small" id="formTitle">Nuevo Registro</div>
+    <input id="nombre" type="text" maxlength="60" placeholder="Nombre completo del estudiante" />
+    <input id="asignatura" type="text" maxlength="60" placeholder="Nombre de la asignatura" />
+    <input id="numCalificaciones" type="number" min="1" max="10" placeholder="Número de calificaciones (1-10)" onchange="generarCampos()" />
+    <div id="calificacionesContainer" class="list"></div>
+    <div class="row-actions">
+      <button onclick="guardar()">Guardar</button>
+      <button class="ghost" onclick="cancelar()">Cancelar</button>
     </div>
   </div>
 
-  <!-- Vista de un registro -->
+  <!-- Vista registro -->
   <div id="resultSection" class="panel section hidden">
-    <div class="result-card">
+    <div class="panel">
       <div id="resultData" class="kv"></div>
     </div>
     <div class="row-actions">
@@ -166,239 +100,174 @@ select{padding:10px 12px; background:rgba(255,255,255,.07); color:var(--fg); bor
     </div>
   </div>
 
-  <!-- Vista de lista por asignatura -->
+  <!-- Vista por asignatura -->
   <div id="subjectSection" class="panel section hidden">
-    <div class="tags" id="subjectTitle"></div>
+    <div class="small" id="subjectTitle"></div>
     <div id="subjectList" class="list"></div>
     <div class="row-actions">
       <button class="ghost" onclick="closeSubjectView()">Volver</button>
-      <button onclick="exportSubjectPDF(currentSubject)">Exportar PDF</button>
+      <button onclick="exportSubjectFromMenu()">Exportar PDF</button>
     </div>
   </div>
 </div>
 
-<!-- Drawer menú -->
+<!-- Drawer -->
 <div id="drawer" class="drawer" aria-hidden="true">
   <h3>Menú</h3>
-  <div class="small">Acciones sobre registros por asignatura</div>
+  <div class="small">Acciones por asignatura</div>
   <div class="line"></div>
   <label for="subjectSelect" class="small">Asignatura</label>
-  <select id="subjectSelect"></select>
+  <select id="subjectSelect" class="select"></select>
   <div class="action-row">
     <button onclick="viewSubject()">Ver en pantalla</button>
     <button onclick="exportSubjectFromMenu()">Exportar PDF</button>
   </div>
   <div class="line"></div>
   <button class="danger" onclick="eliminarTodo()">Eliminar todos los registros</button>
-  <div class="dev-note">Desarrollador: Luis A. Paz Rivera</div>
+  <div class="dev-note">Desarrollado por Luis A. Paz Rivera - lpaz@userena.cl</div>
 </div>
 
 <div id="toast" class="toast">Mensaje</div>
 
-<!-- jsPDF CDN -->
+<!-- jsPDF -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" integrity="sha512-YkQfCwP1d5Xn3k+5hSa3Y5cMo+5q0A8KzjH3qS1lq5d3I3bVfQvE5nqGg7l0g0lq9l2M2CwKqv2yW8F8q1f3WQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script>
-/* Estado */
 let registros = JSON.parse(localStorage.getItem('registros')||'{}'); // { nombre: { asignatura, notas:[string] } }
 let registroActual = null;
 let currentSubject = null;
 
-/* Utils */
 const $ = id => document.getElementById(id);
-function toast(msg, err=false){ const t=$('toast'); t.textContent=msg; t.className='toast'+(err?' error':'')+' show'; setTimeout(()=>t.classList.remove('show'), 2400); }
-function save(){ localStorage.setItem('registros', JSON.stringify(registros)); }
-function sanitize(s){ return String(s).replace(/[\\/:*?"<>|]+/g,'_').replace(/\s+/g,'_'); }
+function toast(msg, err=false){ const t=$('toast'); t.textContent=msg; t.className='toast'+(err?' error':'')+' show'; setTimeout(()=>t.classList.remove('show'),2400) }
+function save(){ localStorage.setItem('registros', JSON.stringify(registros)) }
+function sanitize(s){ return String(s).replace(/[\\/:*?"<>|]+/g,'_').replace(/\s+/g,'_') }
 
-/* Drawer */
-function toggleDrawer(){
-  updateSubjectOptions();
-  const d=$('drawer');
-  const open = !d.classList.contains('show');
-  d.classList.toggle('show', open);
-  d.setAttribute('aria-hidden', open ? 'false' : 'true');
-}
-function updateSubjectOptions(){
-  const sel=$('subjectSelect'); const set=new Set(Object.values(registros).map(r=>r.asignatura).filter(Boolean));
-  const opts=[...set].sort((a,b)=>a.localeCompare(b));
-  sel.innerHTML = opts.length? opts.map(a=>`<option value="${a}">${a}</option>`).join('') : '<option value="" disabled>No hay asignaturas</option>';
-}
+function toggleDrawer(){ updateSubjectOptions(); const d=$('drawer'); const open=!d.classList.contains('show'); d.classList.toggle('show',open); d.setAttribute('aria-hidden',open?'false':'true') }
+function updateSubjectOptions(){ const sel=$('subjectSelect'); const set=new Set(Object.values(registros).map(r=>r.asignatura).filter(Boolean)); const opts=[...set].sort((a,b)=>a.localeCompare(b)); sel.innerHTML = opts.length ? opts.map(a=>`<option value="${a}">${a}</option>`).join('') : '<option value="" disabled>No hay asignaturas</option>' }
 
-/* Pantallas */
-function showHome(){ hideAll(); $('home').classList.remove('hidden'); }
-function showForm(){ hideAll(); $('formSection').classList.remove('hidden'); }
-function showResult(){ hideAll(); $('resultSection').classList.remove('hidden'); }
-function showSubject(){ hideAll(); $('subjectSection').classList.remove('hidden'); }
-function hideAll(){ ['home','formSection','resultSection','subjectSection'].forEach(id=>$(id).classList.add('hidden')); }
-
-/* Sugerencias en vivo */
-const input = $('searchName'), sugg = $('suggestions');
-input.addEventListener('input', ()=>{
-  const q = input.value.trim().toLowerCase();
-  sugg.innerHTML=''; if(!q){sugg.classList.add('hidden'); return;}
-  const names = Object.keys(registros).filter(n=>n.toLowerCase().includes(q)).slice(0,8);
-  if(names.length===0){sugg.classList.add('hidden'); return;}
-  names.forEach(n=>{
-    const d=document.createElement('div'); d.className='s-item'; d.textContent=n;
-    d.onclick=()=>{ input.value=n; sugg.classList.add('hidden'); buscar(); };
-    sugg.appendChild(d);
-  });
-  sugg.classList.remove('hidden');
-});
-document.addEventListener('click', e=>{
-  if(!e.target.closest('#suggestions') && !e.target.closest('#searchName')) sugg.classList.add('hidden');
-});
-input.addEventListener('keydown', e=>{ if(e.key==='Enter'){ e.preventDefault(); buscar(); }});
-
-/* CRUD básico */
-function nuevoRegistro(){
-  registroActual=null; $('formTitle').textContent='Nuevo Registro';
-  $('nombre').value=''; $('asignatura').value=''; $('numCalificaciones').value='';
-  $('calificacionesContainer').innerHTML='';
-  showForm();
-}
-function generarCampos(){
-  const n=parseInt($('numCalificaciones').value)||0;
-  const c=$('calificacionesContainer'); c.innerHTML='';
-  for(let i=0;i<n && i<10;i++){
-    const input=document.createElement('input');
-    input.type='number'; input.min='1'; input.max='7'; input.step='0.1';
-    input.placeholder=`Nota ${i+1}`;
-    c.appendChild(input);
-  }
-}
-function leerNotas(){ return [...document.querySelectorAll('#calificacionesContainer input')].map(i=>parseFloat(i.value)).filter(n=>!isNaN(n)); }
+function showOnly(id){ ['home','formSection','resultSection','subjectSection'].forEach(x=>$(x).classList.add('hidden')); $(id).classList.remove('hidden') }
+function nuevoRegistro(){ registroActual=null; $('formTitle').textContent='Nuevo Registro'; $('nombre').value=''; $('asignatura').value=''; $('numCalificaciones').value=''; $('calificacionesContainer').innerHTML=''; showOnly('formSection') }
+function generarCampos(){ const n=parseInt($('numCalificaciones').value)||0; const c=$('calificacionesContainer'); c.innerHTML=''; for(let i=0;i<n && i<10;i++){ const inp=document.createElement('input'); inp.type='number'; inp.min='1'; inp.max='7'; inp.step='0.1'; inp.placeholder=`Nota ${i+1}`; c.appendChild(inp) } }
+function leerNotas(){ return [...document.querySelectorAll('#calificacionesContainer input')].map(i=>parseFloat(i.value)).filter(n=>!isNaN(n)) }
 function guardar(){
   const nombre=$('nombre').value.trim(), asignatura=$('asignatura').value.trim(), notas=leerNotas();
-  if(!nombre || !asignatura){ toast('Completa nombre y asignatura', true); return; }
-  if(notas.length===0){ toast('Ingresa al menos una calificación', true); return; }
-  if(!notas.every(n=>n>=1 && n<=7)){ toast('Notas fuera de rango (1.0 a 7.0)', true); return; }
-
-  if(registroActual && registroActual!==nombre){
-    if(registros[nombre] && !confirm(`"${nombre}" ya existe. ¿Sobrescribir?`)) return;
-    delete registros[registroActual];
-  } else if(!registroActual && registros[nombre]) {
-    if(!confirm(`"${nombre}" ya existe. ¿Sobrescribir?`)) return;
-  }
-
+  if(!nombre||!asignatura){ toast('Completa nombre y asignatura',true); return }
+  if(notas.length===0){ toast('Ingresa al menos una calificación',true); return }
+  if(!notas.every(n=>n>=1&&n<=7)){ toast('Notas fuera de rango (1.0 a 7.0)',true); return }
+  if(registroActual && registroActual!==nombre){ if(registros[nombre] && !confirm(`"${nombre}" ya existe. ¿Sobrescribir?`)) return; delete registros[registroActual] }
+  else if(!registroActual && registros[nombre]){ if(!confirm(`"${nombre}" ya existe. ¿Sobrescribir?`)) return }
   registros[nombre] = { asignatura, notas: notas.map(n=>n.toFixed(1)) };
-  save(); toast('Registro guardado');
-  cancelar();
+  save(); toast('Registro guardado'); cancelar();
 }
-function cancelar(){ showHome(); }
-function buscar(){
-  const nombre = $('searchName').value.trim();
-  if(!nombre){ toast('Ingresa un nombre', true); return; }
-  const reg = registros[nombre];
-  if(!reg){ toast(`No se encontró "${nombre}"`, true); return; }
-  registroActual = nombre;
-  const nums = reg.notas.map(parseFloat).filter(n=>!isNaN(n));
-  const prom = nums.length ? (nums.reduce((a,b)=>a+b,0)/nums.length).toFixed(2) : 'N/A';
+function cancelar(){ showOnly('home') }
 
+function buscar(){
+  const nombre=$('searchName').value.trim();
+  if(!nombre){ toast('Ingresa un nombre',true); return }
+  const reg=registros[nombre];
+  if(!reg){ toast(`No se encontró "${nombre}"`,true); return }
+  registroActual=nombre;
+  const nums=reg.notas.map(parseFloat).filter(n=>!isNaN(n));
+  const prom=nums.length?(nums.reduce((a,b)=>a+b,0)/nums.length).toFixed(2):'N/A';
   $('resultData').innerHTML = `
     <div><strong>👤 Estudiante:</strong> ${nombre}</div>
     <div><strong>📚 Asignatura:</strong> ${reg.asignatura}</div>
     <div><strong>📝 Calificaciones:</strong> ${reg.notas.join(' • ')}</div>
     <div><strong>📊 Promedio:</strong> ${prom}</div>
-    <div><strong>📈 Total de notas:</strong> ${reg.notas.length}</div>
-  `;
-  showResult();
+    <div><strong>📈 Total de notas:</strong> ${reg.notas.length}</div>`;
+  showOnly('resultSection');
 }
-function volverBusqueda(){ registroActual=null; $('searchName').value=''; showHome(); }
+function volverBusqueda(){ registroActual=null; $('searchName').value=''; showOnly('home') }
 function editar(){
   if(!registroActual) return;
   const { asignatura, notas } = registros[registroActual];
-  $('formTitle').textContent = `Editando: ${registroActual}`;
-  $('nombre').value = registroActual;
-  $('asignatura').value = asignatura;
-  $('numCalificaciones').value = notas.length;
-  generarCampos();
-  const inputs = document.querySelectorAll('#calificacionesContainer input');
-  notas.forEach((n,i)=> inputs[i] && (inputs[i].value = n));
-  showForm();
+  $('formTitle').textContent=`Editando: ${registroActual}`;
+  $('nombre').value=registroActual; $('asignatura').value=asignatura; $('numCalificaciones').value=notas.length;
+  generarCampos(); document.querySelectorAll('#calificacionesContainer input').forEach((el,i)=> el.value = notas[i]||'');
+  showOnly('formSection');
 }
 function eliminarRegistro(){
   if(!registroActual) return;
   if(!confirm(`¿Eliminar el registro de "${registroActual}"?`)) return;
-  delete registros[registroActual]; save(); toast('Registro eliminado');
-  registroActual=null; showHome();
+  delete registros[registroActual]; save(); toast('Registro eliminado'); registroActual=null; showOnly('home');
+}
+function eliminarTodo(){
+  if(Object.keys(registros).length===0){ toast('No hay registros',true); return }
+  if(!confirm('¿Eliminar TODOS los registros? Esta acción no se puede deshacer.')) return;
+  registros={}; save(); toast('Todos los registros eliminados'); showOnly('home');
 }
 
-/* Acciones del menú: ver y exportar por asignatura, eliminar todo */
 function viewSubject(){
-  const sel = $('subjectSelect').value;
-  if(!sel){ toast('Selecciona una asignatura', true); return; }
-  currentSubject = sel;
-  const list = Object.entries(registros).filter(([_,r])=>r.asignatura===sel);
+  const sel=$('subjectSelect').value;
+  if(!sel){ toast('Selecciona una asignatura',true); return }
+  currentSubject=sel;
+  const list=Object.entries(registros).filter(([_,r])=>r.asignatura===sel);
   $('subjectTitle').textContent = `Asignatura: ${sel} (${list.length} registro${list.length!==1?'s':''})`;
-  const cont = $('subjectList'); cont.innerHTML = '';
-  if(list.length===0){
-    cont.innerHTML = '<div class="item">No hay registros para esta asignatura.</div>';
-  } else {
+  const cont=$('subjectList'); cont.innerHTML='';
+  if(list.length===0){ cont.innerHTML='<div class="item">No hay registros para esta asignatura.</div>'; }
+  else{
     list.sort((a,b)=>a[0].localeCompare(b[0])).forEach(([nombre,r])=>{
-      const nums = r.notas.map(parseFloat).filter(n=>!isNaN(n));
-      const prom = nums.length ? (nums.reduce((x,y)=>x+y,0)/nums.length).toFixed(2) : 'N/A';
-      const el = document.createElement('div');
+      const nums=r.notas.map(parseFloat).filter(n=>!isNaN(n));
+      const prom=nums.length?(nums.reduce((x,y)=>x+y,0)/nums.length).toFixed(2):'N/A';
+      const el=document.createElement('div');
       el.className='item';
-      el.innerHTML = `
-        <div class="title">${nombre}</div>
-        <div class="mono">Notas: ${r.notas.join(' • ')}</div>
-        <div class="mono">Promedio: ${prom}</div>
-      `;
+      el.innerHTML=`<div class="title">${nombre}</div>
+                    <div class="mono">Notas: ${r.notas.join(' • ')}</div>
+                    <div class="mono">Promedio: ${prom}</div>`;
       cont.appendChild(el);
     });
   }
   toggleDrawer();
-  showSubject();
+  showOnly('subjectSection');
 }
-function closeSubjectView(){ currentSubject = null; showHome(); }
+function closeSubjectView(){ currentSubject=null; showOnly('home') }
 
 function exportSubjectFromMenu(){
-  const sel = $('subjectSelect').value;
-  if(!sel){ toast('Selecciona una asignatura', true); return; }
+  const sel = currentSubject || $('subjectSelect').value;
+  if(!sel){ toast('Selecciona una asignatura',true); return }
   exportSubjectPDF(sel);
 }
 function exportSubjectPDF(subject){
-  const sel = subject || currentSubject;
-  if(!sel){ toast('No hay asignatura seleccionada', true); return; }
-  const list = Object.entries(registros).filter(([_,r])=>r.asignatura===sel);
-  if(list.length===0){ toast('Sin registros para exportar', true); return; }
-
-  const { jsPDF } = window.jspdf;
-  const doc = new jsPDF({ unit:'pt', format:'a4' });
-  const M=56, MAXY=780; let y=M;
-
-  doc.setFont('helvetica','bold'); doc.setFontSize(18);
-  doc.text(`Registros - Asignatura: ${sel}`, M, y); y+=26;
-  doc.setFont('helvetica','normal'); doc.setFontSize(12);
-
-  list.sort((a,b)=>a[0].localeCompare(b[0])).forEach(([nombre,r], idx)=>{
-    const nums = r.notas.map(parseFloat).filter(n=>!isNaN(n));
-    const prom = nums.length ? (nums.reduce((x,y)=>x+y,0)/nums.length).toFixed(2) : 'N/A';
-    const line = `${idx+1}. ${nombre} | Notas: ${r.notas.join(' • ')} | Promedio: ${prom}`;
-    const lines = doc.splitTextToSize(line, 482);
-    lines.forEach(l=>{
-      if(y>MAXY){ doc.addPage(); y=M; }
-      doc.text(l, M, y); y+=16;
+  const sel=subject;
+  const list=Object.entries(registros).filter(([_,r])=>r.asignatura===sel);
+  if(list.length===0){ toast('Sin registros para exportar',true); return }
+  try{
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF({ unit:'pt', format:'a4' });
+    const M=56, MAXY=780; let y=M;
+    doc.setFont('helvetica','bold'); doc.setFontSize(18);
+    doc.text(`Registros - Asignatura: ${sel}`, M, y); y+=26;
+    doc.setFont('helvetica','normal'); doc.setFontSize(12);
+    list.sort((a,b)=>a[0].localeCompare(b[0])).forEach(([nombre,r],idx)=>{
+      const nums=r.notas.map(parseFloat).filter(n=>!isNaN(n));
+      const prom=nums.length?(nums.reduce((x,y)=>x+y,0)/nums.length).toFixed(2):'N/A';
+      const line=`${idx+1}. ${nombre} | Notas: ${r.notas.join(' • ')} | Promedio: ${prom}`;
+      const lines=doc.splitTextToSize(line, 482);
+      lines.forEach(l=>{ if(y>MAXY){ doc.addPage(); y=M } doc.text(l,M,y); y+=16; }); y+=4;
     });
-    y+=4;
-  });
-
-  if(y>MAXY){ doc.addPage(); y=M; }
-  doc.setDrawColor(200); doc.line(M,y,M+482,y); y+=14;
-  doc.setFontSize(10); doc.text(`Generado: ${new Date().toLocaleString()}`, M, y);
-
-  doc.save(`Registros_${sanitize(sel)}.pdf`);
-  toast('PDF exportado');
+    if(y>MAXY){ doc.addPage(); y=M }
+    doc.setDrawColor(200); doc.line(M,y,M+482,y); y+=14;
+    doc.setFontSize(10); doc.text(`Generado: ${new Date().toLocaleString()}`, M, y);
+    doc.save(`Registros_${sanitize(sel)}.pdf`);
+    toast('PDF exportado');
+  }catch(e){ toast('No se pudo exportar el PDF',true) }
 }
-function eliminarTodo(){
-  if(Object.keys(registros).length===0){ toast('No hay registros', true); return; }
-  if(!confirm('¿Eliminar TODOS los registros? Esta acción no se puede deshacer.')) return;
-  registros = {}; save(); toast('Todos los registros fueron eliminados');
-  showHome();
-}
+
+/* Sugerencias en vivo */
+const searchInput=$('searchName'), suggestions=$('suggestions');
+searchInput.addEventListener('input',()=>{
+  const q=searchInput.value.trim().toLowerCase(); suggestions.innerHTML='';
+  if(!q){ suggestions.classList.add('hidden'); return }
+  const matches=Object.keys(registros).filter(n=>n.toLowerCase().includes(q)).slice(0,8);
+  if(matches.length===0){ suggestions.classList.add('hidden'); return }
+  matches.forEach(n=>{ const d=document.createElement('div'); d.className='s-item'; d.textContent=n; d.onclick=()=>{ searchInput.value=n; suggestions.classList.add('hidden'); buscar() }; suggestions.appendChild(d) });
+  suggestions.classList.remove('hidden');
+});
+document.addEventListener('click',e=>{ if(!e.target.closest('#suggestions') && !e.target.closest('#searchName')) suggestions.classList.add('hidden') });
+searchInput.addEventListener('keydown',e=>{ if(e.key==='Enter'){ e.preventDefault(); buscar() } });
 
 /* Inicio */
-showHome();
+showOnly('home');
+updateSubjectOptions();
 </script>
 </body>
 </html>

@@ -1,94 +1,199 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Registro de Calificaciones</title>
 <style>
+/* Tipografía y base minimalista */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Inter',sans-serif;background:linear-gradient(135deg,#0c0c0c,#1a1a2e 50%,#16213e);color:#e0e6ed;min-height:100vh;display:flex;justify-content:flex-start;align-items:center;flex-direction:column;padding:20px}
-.container{width:100%;max-width:900px}
-h1{font-size:2.6rem;font-weight:700;margin:28px 0;background:linear-gradient(135deg,#00d4ff 0%,#ff00ff 50%,#ff4081 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;text-align:center}
-.glass{background:rgba(255,255,255,.06);backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,.12);border-radius:16px;padding:20px;margin:14px 0}
-.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
-input,button{padding:12px 14px;border:none;border-radius:12px;font-size:15px}
-input{min-width:220px;background:rgba(255,255,255,.08);color:#e0e6ed;border:1px solid rgba(255,255,255,.12)}
-input:focus{outline:none;border-color:#00d4ff;box-shadow:0 0 12px rgba(0,212,255,.35)}
-button{cursor:pointer;color:#fff;background:linear-gradient(135deg,#667eea,#764ba2)}
-button:hover{transform:translateY(-1px);box-shadow:0 10px 20px rgba(0,0,0,.25)}
-.btn-primary{background:linear-gradient(135deg,#00d4ff,#ff00ff)}
-.btn-success{background:linear-gradient(135deg,#4facfe,#00f2fe)}
-.btn-edit{background:linear-gradient(135deg,#ffecd2,#fcb69f);color:#333}
-.btn-danger{background:linear-gradient(135deg,#ff6b6b,#ee5a52)}
-.grid{display:grid;grid-template-columns:1fr;gap:12px;margin:12px 0}
-.califs{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px;padding:12px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:12px}
-.nota{display:flex;gap:8px}
-.nota input{flex:1;text-align:center;border:1px solid rgba(0,212,255,.25)}
-.mini{padding:8px 10px;font-size:13px}
-.prom{margin-top:8px;text-align:center;padding:10px;border:1px solid rgba(255,255,255,.1);border-radius:10px}
-.prom.excelente{color:#00ff88}.prom.bueno{color:#00d4ff}.prom.regular{color:#ffaa00}.prom.deficiente{color:#ff5555}
-.result{border-left:4px solid #00d4ff}
-.center{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:10px}
-.note{position:fixed;top:16px;right:16px;padding:12px 16px;border-radius:12px;color:#fff;transform:translateX(150%);transition:.25s;z-index:1000}
-.note.show{transform:translateX(0)}
-.note.ok{background:linear-gradient(135deg,#4facfe,#00f2fe)}.note.err{background:linear-gradient(135deg,#ff6b6b,#ee5a52)}
-.suggest{position:absolute;top:46px;left:0;width:100%;z-index:10;border-radius:12px;background:rgba(255,255,255,.06);backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,.12);overflow:hidden}
-.s-item{padding:10px 12px;cursor:pointer}.s-item:hover{background:rgba(255,255,255,.1)}
-@media(max-width:768px){h1{font-size:2.2rem}}
+:root{
+  --bg:#0f1220; --panel:rgba(255,255,255,.06); --stroke:rgba(255,255,255,.12);
+  --fg:#e7ecf2; --accent:#00d4ff; --muted:#9aa7b2;
+}
+html,body{height:100%}
+body{
+  font-family:'Inter',sans-serif; background:linear-gradient(135deg,#0b0b0f 0%,#14182c 60%,#0f1220 100%);
+  color:var(--fg); display:flex; flex-direction:column; align-items:center; padding:24px;
+}
+.container{width:100%;max-width:780px}
+
+/* Encabezado y layout principal */
+h1{
+  font-size:2.2rem; font-weight:700; letter-spacing:.3px; text-align:center; margin:28px 0 18px;
+  background:linear-gradient(135deg,#00d4ff 0%,#ff00ff 60%,#ff4081 100%);
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+}
+.panel{
+  background:var(--panel); border:1px solid var(--stroke); border-radius:14px; padding:16px;
+}
+.hidden{display:none!important}
+
+/* Buscador minimal */
+.search-wrap{display:flex; flex-direction:column; gap:10px; align-items:stretch}
+.search-row{display:flex; gap:10px; align-items:center}
+input,button,select{border:none; border-radius:12px; font-size:15px}
+input{
+  padding:12px 14px; background:rgba(255,255,255,.08); color:var(--fg);
+  border:1px solid var(--stroke); flex:1; min-width:220px;
+}
+input::placeholder{color:var(--muted)}
+input:focus{outline:none; border-color:var(--accent); box-shadow:0 0 0 3px rgba(0,212,255,.15)}
+button{
+  padding:12px 16px; color:white; background:linear-gradient(135deg,#4facfe 0%,#00f2fe 100%);
+  cursor:pointer; font-weight:600; letter-spacing:.2px;
+}
+button.ghost{background:transparent; color:var(--fg); border:1px solid var(--stroke)}
+button.danger{background:linear-gradient(135deg,#ff6b6b 0%,#ee5a52 100%)}
+button.primary{background:linear-gradient(135deg,#00d4ff 0%,#ff00ff 100%)}
+
+/* Sugerencias */
+.suggest{position:relative}
+.suggest-box{
+  position:absolute; top:48px; left:0; right:0; background:var(--panel);
+  border:1px solid var(--stroke); border-radius:12px; overflow:hidden; z-index:10;
+}
+.s-item{padding:10px 12px; cursor:pointer}
+.s-item:hover{background:rgba(255,255,255,.08)}
+
+/* Menú hamburguesa */
+.header-bar{position:relative; display:flex; justify-content:flex-end; margin-bottom:8px}
+.hamburger{
+  width:40px; height:40px; border-radius:10px; border:1px solid var(--stroke);
+  background:var(--panel); display:grid; place-items:center; cursor:pointer;
+}
+.hamburger span{display:block; width:18px; height:2px; background:var(--fg); position:relative}
+.hamburger span::before,.hamburger span::after{
+  content:''; position:absolute; left:0; width:18px; height:2px; background:var(--fg);
+}
+.hamburger span::before{top:-6px}.hamburger span::after{top:6px}
+
+/* Drawer */
+.drawer{
+  position:fixed; top:0; right:0; width:320px; max-width:92vw; height:100vh; padding:18px;
+  background:rgba(10,12,22,.9); backdrop-filter:blur(10px);
+  border-left:1px solid var(--stroke); transform:translateX(105%); transition:transform .25s ease;
+  z-index:50; display:flex; flex-direction:column; gap:14px;
+}
+.drawer.show{transform:translateX(0)}
+.drawer h3{font-size:1.05rem; margin-bottom:4px}
+.drawer .line{height:1px; background:var(--stroke); margin:6px 0}
+.small{font-size:.92rem; color:var(--muted)}
+select{padding:10px 12px; background:rgba(255,255,255,.07); color:var(--fg); border:1px solid var(--stroke); width:100%}
+.action-row{display:flex; gap:10px; flex-wrap:wrap}
+.dev-note{margin-top:auto; font-size:.85rem; color:var(--muted); border-top:1px solid var(--stroke); padding-top:10px}
+
+/* Vistas */
+.section{margin-top:14px}
+.result-card{background:var(--panel); border:1px solid var(--stroke); border-radius:12px; padding:16px}
+.row-actions{display:flex; gap:10px; flex-wrap:wrap; justify-content:center; margin-top:12px}
+.kv{display:grid; gap:8px; font-size:1rem}
+.kv div strong{color:var(--accent)}
+
+/* Lista por asignatura */
+.list{display:grid; gap:12px; margin-top:10px}
+.item{border:1px solid var(--stroke); border-radius:12px; padding:12px; background:rgba(255,255,255,.04)}
+.item .title{font-weight:600; margin-bottom:6px}
+.mono{font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;}
+
+/* Formulario */
+.form-grid{display:grid; gap:12px}
+.tags{font-size:.9rem; color:var(--muted)}
+
+/* Toast */
+.toast{
+  position:fixed; top:16px; right:16px; padding:10px 14px; border-radius:10px; color:white;
+  background:linear-gradient(135deg,#4facfe 0%,#00f2fe 100%); transform:translateX(140%);
+  transition:transform .25s ease; z-index:1000
+}
+.toast.show{transform:translateX(0)}
+.toast.error{background:linear-gradient(135deg,#ff6b6b 0%,#ee5a52 100%)}
+
+@media (max-width:640px){
+  h1{font-size:1.8rem}
+  .search-row{flex-direction:column; align-items:stretch}
+}
 </style>
 </head>
 <body>
 <div class="container">
+  <div class="header-bar">
+    <button class="hamburger" aria-label="Menú" onclick="toggleDrawer()"><span></span></button>
+  </div>
+
   <h1>Registro de Calificaciones</h1>
 
-  <!-- Buscador -->
-  <div id="searchSection" class="glass">
-    <div class="row">
-      <div style="position:relative;flex:1;min-width:260px">
-        <input id="searchName" type="text" placeholder="Buscar estudiante por nombre..." maxlength="60" style="width:100%">
-        <div id="suggestions" class="suggest hidden"></div>
+  <!-- Pantalla principal minimal: buscador y botón -->
+  <div id="home" class="panel section">
+    <div class="search-wrap">
+      <div class="search-row">
+        <div class="suggest" style="flex:1">
+          <input id="searchName" type="text" placeholder="Buscar estudiante por nombre..." maxlength="60">
+          <div id="suggestions" class="suggest-box hidden"></div>
+        </div>
+        <button class="primary" onclick="buscar()">Buscar</button>
       </div>
-      <button class="btn-primary" onclick="buscar()">Buscar</button>
-      <button class="btn-success" onclick="nuevoRegistro()">Nuevo Registro</button>
-      <button class="btn-success" onclick="exportarPDFPorAsignatura()">Exportar PDF</button>
-      <button class="btn-danger" onclick="eliminarTodo()">Eliminar todo</button>
+      <button onclick="nuevoRegistro()">Nuevo Registro</button>
+      <div class="tags">Escribe para ver coincidencias. Selecciona una sugerencia para abrir el registro.</div>
     </div>
   </div>
 
-  <!-- Formulario -->
-  <div id="formSection" class="glass hidden">
-    <h3 id="formTitle" style="text-align:center;color:#00d4ff;margin-bottom:6px">Nuevo Registro</h3>
-    <div class="grid">
+  <!-- Formulario de registro -->
+  <div id="formSection" class="panel section hidden">
+    <div class="form-grid">
+      <div class="tags" id="formTitle">Nuevo Registro</div>
       <input id="nombre" type="text" maxlength="60" placeholder="Nombre completo del estudiante">
       <input id="asignatura" type="text" maxlength="60" placeholder="Nombre de la asignatura">
-      <div class="row">
-        <input id="numCalificaciones" type="number" min="1" max="10" placeholder="Número de calificaciones (1-10)" onchange="generarCampos()">
-        <button class="mini" type="button" onclick="agregarNota()">Agregar nota</button>
-        <button class="mini" type="button" onclick="limpiarNotas()">Limpiar notas</button>
+      <input id="numCalificaciones" type="number" min="1" max="10" placeholder="Número de calificaciones (1-10)" onchange="generarCampos()">
+      <div id="calificacionesContainer" class="form-grid"></div>
+      <div class="row-actions">
+        <button onclick="guardar()">Guardar</button>
+        <button class="ghost" onclick="cancelar()">Cancelar</button>
       </div>
-    </div>
-    <div id="calificacionesContainer" class="califs"></div>
-    <div id="promedio" class="prom"></div>
-    <div class="center">
-      <button class="btn-success" onclick="guardar()">Guardar</button>
-      <button class="btn-primary" onclick="cancelar()">Cancelar</button>
     </div>
   </div>
 
-  <!-- Resultados -->
-  <div id="resultSection" class="glass hidden">
-    <div class="glass result">
-      <div id="resultData" class="grid"></div>
+  <!-- Vista de un registro -->
+  <div id="resultSection" class="panel section hidden">
+    <div class="result-card">
+      <div id="resultData" class="kv"></div>
     </div>
-    <div class="center">
-      <button class="btn-edit" onclick="editar()">Editar</button>
-      <button class="btn-danger" onclick="eliminarRegistro()">Eliminar</button>
-      <button class="btn-primary" onclick="volverBusqueda()">Nueva búsqueda</button>
+    <div class="row-actions">
+      <button onclick="editar()">Editar</button>
+      <button class="ghost" onclick="volverBusqueda()">Nueva búsqueda</button>
+      <button class="danger" onclick="eliminarRegistro()">Eliminar registro</button>
+    </div>
+  </div>
+
+  <!-- Vista de lista por asignatura -->
+  <div id="subjectSection" class="panel section hidden">
+    <div class="tags" id="subjectTitle"></div>
+    <div id="subjectList" class="list"></div>
+    <div class="row-actions">
+      <button class="ghost" onclick="closeSubjectView()">Volver</button>
+      <button onclick="exportSubjectPDF(currentSubject)">Exportar PDF</button>
     </div>
   </div>
 </div>
 
-<div id="toast" class="note"></div>
+<!-- Drawer menú -->
+<div id="drawer" class="drawer" aria-hidden="true">
+  <h3>Menú</h3>
+  <div class="small">Acciones sobre registros por asignatura</div>
+  <div class="line"></div>
+  <label for="subjectSelect" class="small">Asignatura</label>
+  <select id="subjectSelect"></select>
+  <div class="action-row">
+    <button onclick="viewSubject()">Ver en pantalla</button>
+    <button onclick="exportSubjectFromMenu()">Exportar PDF</button>
+  </div>
+  <div class="line"></div>
+  <button class="danger" onclick="eliminarTodo()">Eliminar todos los registros</button>
+  <div class="dev-note">Desarrollador: Luis A. Paz Rivera</div>
+</div>
+
+<div id="toast" class="toast">Mensaje</div>
 
 <!-- jsPDF CDN -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" integrity="sha512-YkQfCwP1d5Xn3k+5hSa3Y5cMo+5q0A8KzjH3qS1lq5d3I3bVfQvE5nqGg7l0g0lq9l2M2CwKqv2yW8F8q1f3WQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
@@ -96,100 +201,204 @@ button:hover{transform:translateY(-1px);box-shadow:0 10px 20px rgba(0,0,0,.25)}
 /* Estado */
 let registros = JSON.parse(localStorage.getItem('registros')||'{}'); // { nombre: { asignatura, notas:[string] } }
 let registroActual = null;
+let currentSubject = null;
 
-/* Utilidades */
-const $ = id=>document.getElementById(id);
-function toast(msg,type='ok'){const t=$('toast');t.textContent=msg;t.className=`note ${type} show`;setTimeout(()=>t.classList.remove('show'),2600)}
-function save(){localStorage.setItem('registros',JSON.stringify(registros))}
-function sanitize(s){return String(s).replace(/[\\/:*?"<>|]+/g,'_').replace(/\s+/g,'_')}
+/* Utils */
+const $ = id => document.getElementById(id);
+function toast(msg, err=false){ const t=$('toast'); t.textContent=msg; t.className='toast'+(err?' error':'')+' show'; setTimeout(()=>t.classList.remove('show'), 2400); }
+function save(){ localStorage.setItem('registros', JSON.stringify(registros)); }
+function sanitize(s){ return String(s).replace(/[\\/:*?"<>|]+/g,'_').replace(/\s+/g,'_'); }
 
-/* Búsqueda en vivo */
-const inputSearch=$('searchName'), boxSug=$('suggestions');
-inputSearch.addEventListener('input',()=>{
-  const q=inputSearch.value.trim().toLowerCase(); boxSug.innerHTML='';
-  if(!q){boxSug.classList.add('hidden');return}
-  const matches=Object.keys(registros).filter(n=>n.toLowerCase().includes(q)).slice(0,8);
-  if(matches.length===0){boxSug.classList.add('hidden');return}
-  matches.forEach(n=>{const d=document.createElement('div');d.className='s-item';d.textContent=n;d.onclick=()=>{inputSearch.value=n;boxSug.classList.add('hidden');buscar()};boxSug.appendChild(d)});
-  boxSug.classList.remove('hidden');
+/* Drawer */
+function toggleDrawer(){
+  updateSubjectOptions();
+  const d=$('drawer');
+  const open = !d.classList.contains('show');
+  d.classList.toggle('show', open);
+  d.setAttribute('aria-hidden', open ? 'false' : 'true');
+}
+function updateSubjectOptions(){
+  const sel=$('subjectSelect'); const set=new Set(Object.values(registros).map(r=>r.asignatura).filter(Boolean));
+  const opts=[...set].sort((a,b)=>a.localeCompare(b));
+  sel.innerHTML = opts.length? opts.map(a=>`<option value="${a}">${a}</option>`).join('') : '<option value="" disabled>No hay asignaturas</option>';
+}
+
+/* Pantallas */
+function showHome(){ hideAll(); $('home').classList.remove('hidden'); }
+function showForm(){ hideAll(); $('formSection').classList.remove('hidden'); }
+function showResult(){ hideAll(); $('resultSection').classList.remove('hidden'); }
+function showSubject(){ hideAll(); $('subjectSection').classList.remove('hidden'); }
+function hideAll(){ ['home','formSection','resultSection','subjectSection'].forEach(id=>$(id).classList.add('hidden')); }
+
+/* Sugerencias en vivo */
+const input = $('searchName'), sugg = $('suggestions');
+input.addEventListener('input', ()=>{
+  const q = input.value.trim().toLowerCase();
+  sugg.innerHTML=''; if(!q){sugg.classList.add('hidden'); return;}
+  const names = Object.keys(registros).filter(n=>n.toLowerCase().includes(q)).slice(0,8);
+  if(names.length===0){sugg.classList.add('hidden'); return;}
+  names.forEach(n=>{
+    const d=document.createElement('div'); d.className='s-item'; d.textContent=n;
+    d.onclick=()=>{ input.value=n; sugg.classList.add('hidden'); buscar(); };
+    sugg.appendChild(d);
+  });
+  sugg.classList.remove('hidden');
 });
-document.addEventListener('click',e=>{ if(!e.target.closest('#suggestions') && !e.target.closest('#searchName')) boxSug.classList.add('hidden') });
-inputSearch.addEventListener('keydown',e=>{ if(e.key==='Enter'){e.preventDefault();buscar()} });
+document.addEventListener('click', e=>{
+  if(!e.target.closest('#suggestions') && !e.target.closest('#searchName')) sugg.classList.add('hidden');
+});
+input.addEventListener('keydown', e=>{ if(e.key==='Enter'){ e.preventDefault(); buscar(); }});
 
-/* Navegación */
-function nuevoRegistro(){registroActual=null;$('formTitle').textContent='Nuevo Registro';limpiarFormulario();$('searchSection').classList.add('hidden');$('resultSection').classList.add('hidden');$('formSection').classList.remove('hidden')}
-function cancelar(){$('formSection').classList.add('hidden');$('searchSection').classList.remove('hidden');limpiarFormulario()}
-function volverBusqueda(){registroActual=null;$('resultSection').classList.add('hidden');$('searchSection').classList.remove('hidden');$('searchName').value=''}
-
-/* Formulario / notas */
-function limpiarFormulario(){$('nombre').value='';$('asignatura').value='';$('numCalificaciones').value='';$('calificacionesContainer').innerHTML='';const p=$('promedio');p.textContent='';p.className='prom'}
-function agregarNota(valor=''){const c=$('calificacionesContainer');const wrap=document.createElement('div');wrap.className='nota';const i=document.createElement('input');i.type='number';i.min='1';i.max='7';i.step='0.1';i.placeholder=`Nota ${c.children.length+1}`;i.value=valor;i.oninput=()=>{validarNota(i);calcProm()};const b=document.createElement('button');b.type='button';b.className='mini btn-danger';b.textContent='Eliminar';b.onclick=()=>{wrap.remove();renum();calcProm()};wrap.appendChild(i);wrap.appendChild(b);c.appendChild(wrap)}
-function limpiarNotas(){$('calificacionesContainer').innerHTML='';$('numCalificaciones').value='';calcProm()}
-function generarCampos(){const n=parseInt($('numCalificaciones').value)||0;const c=$('calificacionesContainer');c.innerHTML='';for(let i=0;i<n && i<10;i++)agregarNota('');calcProm()}
-function renum(){document.querySelectorAll('.nota input').forEach((el,i)=>el.placeholder=`Nota ${i+1}`)}
-function validarNota(input){const v=parseFloat(input.value);input.style.borderColor=(input.value && (isNaN(v)||v<1||v>7))?'#ff6b6b':'rgba(0,212,255,.25)'}
-function leerNotas(){return [...document.querySelectorAll('.nota input')].map(e=>e.value.trim()).filter(v=>v!=='').map(parseFloat).filter(n=>!isNaN(n))}
-function calcProm(){const ns=leerNotas();const p=$('promedio');if(ns.length===0){p.textContent='';p.className='prom';return}const m=ns.reduce((a,b)=>a+b,0)/ns.length;let cls='deficiente',em='❌';if(m>=6)cls='excelente',em='🌟';else if(m>=5)cls='bueno',em='👍';else if(m>=4)cls='regular',em='⚠️';p.textContent=`${em} Promedio: ${m.toFixed(2)}`;p.className=`prom ${cls}`}
-
-/* CRUD */
+/* CRUD básico */
+function nuevoRegistro(){
+  registroActual=null; $('formTitle').textContent='Nuevo Registro';
+  $('nombre').value=''; $('asignatura').value=''; $('numCalificaciones').value='';
+  $('calificacionesContainer').innerHTML='';
+  showForm();
+}
+function generarCampos(){
+  const n=parseInt($('numCalificaciones').value)||0;
+  const c=$('calificacionesContainer'); c.innerHTML='';
+  for(let i=0;i<n && i<10;i++){
+    const input=document.createElement('input');
+    input.type='number'; input.min='1'; input.max='7'; input.step='0.1';
+    input.placeholder=`Nota ${i+1}`;
+    c.appendChild(input);
+  }
+}
+function leerNotas(){ return [...document.querySelectorAll('#calificacionesContainer input')].map(i=>parseFloat(i.value)).filter(n=>!isNaN(n)); }
 function guardar(){
   const nombre=$('nombre').value.trim(), asignatura=$('asignatura').value.trim(), notas=leerNotas();
-  if(!nombre||!asignatura){toast('Completa nombre y asignatura','err');return}
-  if(notas.length===0){toast('Ingresa al menos una calificación','err');return}
-  if(!notas.every(n=>n>=1&&n<=7)){toast('Notas deben estar entre 1.0 y 7.0','err');return}
-  if(registroActual&&registroActual!==nombre){ if(registros[nombre] && !confirm(`"${nombre}" ya existe. ¿Sobrescribir?`)) return; delete registros[registroActual] }
-  else if(!registroActual&&registros[nombre]){ if(!confirm(`"${nombre}" ya existe. ¿Sobrescribir?`)) return }
-  registros[nombre]={asignatura, notas:notas.map(n=>n.toFixed(1))}; save(); toast(`Registro guardado para ${nombre}`,'ok'); cancelar();
+  if(!nombre || !asignatura){ toast('Completa nombre y asignatura', true); return; }
+  if(notas.length===0){ toast('Ingresa al menos una calificación', true); return; }
+  if(!notas.every(n=>n>=1 && n<=7)){ toast('Notas fuera de rango (1.0 a 7.0)', true); return; }
+
+  if(registroActual && registroActual!==nombre){
+    if(registros[nombre] && !confirm(`"${nombre}" ya existe. ¿Sobrescribir?`)) return;
+    delete registros[registroActual];
+  } else if(!registroActual && registros[nombre]) {
+    if(!confirm(`"${nombre}" ya existe. ¿Sobrescribir?`)) return;
+  }
+
+  registros[nombre] = { asignatura, notas: notas.map(n=>n.toFixed(1)) };
+  save(); toast('Registro guardado');
+  cancelar();
 }
+function cancelar(){ showHome(); }
 function buscar(){
-  const nombre=$('searchName').value.trim();
-  if(!nombre){toast('Ingresa un nombre para buscar','err');return}
-  const reg=registros[nombre];
-  if(!reg){toast(`No se encontró "${nombre}"`,'err');return}
-  registroActual=nombre;
-  const notasNum=reg.notas.map(parseFloat).filter(n=>!isNaN(n)); const prom=notasNum.length?(notasNum.reduce((a,b)=>a+b,0)/notasNum.length).toFixed(2):'N/A';
-  $('resultData').innerHTML=`
+  const nombre = $('searchName').value.trim();
+  if(!nombre){ toast('Ingresa un nombre', true); return; }
+  const reg = registros[nombre];
+  if(!reg){ toast(`No se encontró "${nombre}"`, true); return; }
+  registroActual = nombre;
+  const nums = reg.notas.map(parseFloat).filter(n=>!isNaN(n));
+  const prom = nums.length ? (nums.reduce((a,b)=>a+b,0)/nums.length).toFixed(2) : 'N/A';
+
+  $('resultData').innerHTML = `
     <div><strong>👤 Estudiante:</strong> ${nombre}</div>
     <div><strong>📚 Asignatura:</strong> ${reg.asignatura}</div>
     <div><strong>📝 Calificaciones:</strong> ${reg.notas.join(' • ')}</div>
     <div><strong>📊 Promedio:</strong> ${prom}</div>
-    <div><strong>📈 Total de notas:</strong> ${reg.notas.length}</div>`;
-  $('searchSection').classList.add('hidden');$('formSection').classList.add('hidden');$('resultSection').classList.remove('hidden'); toast(`Registro encontrado: ${nombre}`,'ok');
+    <div><strong>📈 Total de notas:</strong> ${reg.notas.length}</div>
+  `;
+  showResult();
 }
+function volverBusqueda(){ registroActual=null; $('searchName').value=''; showHome(); }
 function editar(){
-  if(!registroActual)return; const {asignatura,notas}=registros[registroActual];
-  $('formTitle').textContent=`Editando: ${registroActual}`; $('nombre').value=registroActual; $('asignatura').value=asignatura;
-  const c=$('calificacionesContainer'); c.innerHTML=''; notas.forEach(n=>agregarNota(n)); $('numCalificaciones').value=notas.length; calcProm();
-  $('resultSection').classList.add('hidden'); $('formSection').classList.remove('hidden');
+  if(!registroActual) return;
+  const { asignatura, notas } = registros[registroActual];
+  $('formTitle').textContent = `Editando: ${registroActual}`;
+  $('nombre').value = registroActual;
+  $('asignatura').value = asignatura;
+  $('numCalificaciones').value = notas.length;
+  generarCampos();
+  const inputs = document.querySelectorAll('#calificacionesContainer input');
+  notas.forEach((n,i)=> inputs[i] && (inputs[i].value = n));
+  showForm();
 }
 function eliminarRegistro(){
-  if(!registroActual)return; if(!confirm(`¿Eliminar el registro de "${registroActual}"?`)) return;
-  delete registros[registroActual]; save(); toast('Registro eliminado','ok'); registroActual=null; $('resultSection').classList.add('hidden'); $('searchSection').classList.remove('hidden'); $('searchName').value='';
-}
-function eliminarTodo(){
-  if(Object.keys(registros).length===0){toast('No hay registros','err');return}
-  if(!confirm('¿Eliminar TODOS los registros?')) return; registros={}; save(); toast('Todos los registros eliminados','ok'); registroActual=null; $('formSection').classList.add('hidden'); $('resultSection').classList.add('hidden'); $('searchSection').classList.remove('hidden'); $('searchName').value=''; limpiarFormulario();
+  if(!registroActual) return;
+  if(!confirm(`¿Eliminar el registro de "${registroActual}"?`)) return;
+  delete registros[registroActual]; save(); toast('Registro eliminado');
+  registroActual=null; showHome();
 }
 
-/* Exportar PDF por asignatura (todos los estudiantes de esa asignatura) */
-function exportarPDFPorAsignatura(){
-  const asignaturas=[...new Set(Object.values(registros).map(r=>r.asignatura))];
-  if(asignaturas.length===0){toast('No hay asignaturas registradas','err');return}
-  const sel=prompt(`Ingrese la asignatura a exportar:\n\n${asignaturas.join('\n')}`); if(!sel) return;
-  const lista=Object.entries(registros).filter(([_,r])=>r.asignatura.toLowerCase()===sel.trim().toLowerCase());
-  if(lista.length===0){toast(`No hay registros para "${sel}"`,'err');return}
-  const {jsPDF}=window.jspdf; const doc=new jsPDF({unit:'pt',format:'a4'}); const M=56; const MAXY=780; let y=M;
-  doc.setFont('helvetica','bold'); doc.setFontSize(18); doc.text(`Registros - Asignatura: ${sel}`,M,y); y+=26;
-  doc.setFont('helvetica','normal'); doc.setFontSize(12);
-  lista.sort((a,b)=>a[0].localeCompare(b[0])).forEach(([nombre,r],idx)=>{
-    const notasStr=r.notas.join(' • '); const nums=r.notas.map(parseFloat).filter(n=>!isNaN(n)); const prom=nums.length?(nums.reduce((a,b)=>a+b,0)/nums.length).toFixed(2):'N/A';
-    const lines=doc.splitTextToSize(`${idx+1}. ${nombre}  |  Notas: ${notasStr}  |  Promedio: ${prom}`, 482);
-    lines.forEach(line=>{ if(y>MAXY){doc.addPage(); y=M} doc.text(line,M,y); y+=16; }); y+=6;
-  });
-  if(y>MAXY){doc.addPage(); y=M}
-  doc.setDrawColor(200); doc.line(M,y,M+482,y); y+=16; doc.setFontSize(10); doc.text(`Generado: ${new Date().toLocaleString()}`,M,y);
-  doc.save(`Registros_${sanitize(sel)}.pdf`);
+/* Acciones del menú: ver y exportar por asignatura, eliminar todo */
+function viewSubject(){
+  const sel = $('subjectSelect').value;
+  if(!sel){ toast('Selecciona una asignatura', true); return; }
+  currentSubject = sel;
+  const list = Object.entries(registros).filter(([_,r])=>r.asignatura===sel);
+  $('subjectTitle').textContent = `Asignatura: ${sel} (${list.length} registro${list.length!==1?'s':''})`;
+  const cont = $('subjectList'); cont.innerHTML = '';
+  if(list.length===0){
+    cont.innerHTML = '<div class="item">No hay registros para esta asignatura.</div>';
+  } else {
+    list.sort((a,b)=>a[0].localeCompare(b[0])).forEach(([nombre,r])=>{
+      const nums = r.notas.map(parseFloat).filter(n=>!isNaN(n));
+      const prom = nums.length ? (nums.reduce((x,y)=>x+y,0)/nums.length).toFixed(2) : 'N/A';
+      const el = document.createElement('div');
+      el.className='item';
+      el.innerHTML = `
+        <div class="title">${nombre}</div>
+        <div class="mono">Notas: ${r.notas.join(' • ')}</div>
+        <div class="mono">Promedio: ${prom}</div>
+      `;
+      cont.appendChild(el);
+    });
+  }
+  toggleDrawer();
+  showSubject();
 }
+function closeSubjectView(){ currentSubject = null; showHome(); }
+
+function exportSubjectFromMenu(){
+  const sel = $('subjectSelect').value;
+  if(!sel){ toast('Selecciona una asignatura', true); return; }
+  exportSubjectPDF(sel);
+}
+function exportSubjectPDF(subject){
+  const sel = subject || currentSubject;
+  if(!sel){ toast('No hay asignatura seleccionada', true); return; }
+  const list = Object.entries(registros).filter(([_,r])=>r.asignatura===sel);
+  if(list.length===0){ toast('Sin registros para exportar', true); return; }
+
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF({ unit:'pt', format:'a4' });
+  const M=56, MAXY=780; let y=M;
+
+  doc.setFont('helvetica','bold'); doc.setFontSize(18);
+  doc.text(`Registros - Asignatura: ${sel}`, M, y); y+=26;
+  doc.setFont('helvetica','normal'); doc.setFontSize(12);
+
+  list.sort((a,b)=>a[0].localeCompare(b[0])).forEach(([nombre,r], idx)=>{
+    const nums = r.notas.map(parseFloat).filter(n=>!isNaN(n));
+    const prom = nums.length ? (nums.reduce((x,y)=>x+y,0)/nums.length).toFixed(2) : 'N/A';
+    const line = `${idx+1}. ${nombre} | Notas: ${r.notas.join(' • ')} | Promedio: ${prom}`;
+    const lines = doc.splitTextToSize(line, 482);
+    lines.forEach(l=>{
+      if(y>MAXY){ doc.addPage(); y=M; }
+      doc.text(l, M, y); y+=16;
+    });
+    y+=4;
+  });
+
+  if(y>MAXY){ doc.addPage(); y=M; }
+  doc.setDrawColor(200); doc.line(M,y,M+482,y); y+=14;
+  doc.setFontSize(10); doc.text(`Generado: ${new Date().toLocaleString()}`, M, y);
+
+  doc.save(`Registros_${sanitize(sel)}.pdf`);
+  toast('PDF exportado');
+}
+function eliminarTodo(){
+  if(Object.keys(registros).length===0){ toast('No hay registros', true); return; }
+  if(!confirm('¿Eliminar TODOS los registros? Esta acción no se puede deshacer.')) return;
+  registros = {}; save(); toast('Todos los registros fueron eliminados');
+  showHome();
+}
+
+/* Inicio */
+showHome();
 </script>
 </body>
 </html>
